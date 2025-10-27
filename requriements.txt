@@ -1,0 +1,7 @@
+flask==3.0.0
+pymongo==4.6.1
+requests==2.32.3
+
+# Private repos
+git+https://<TOKEN>@github.com/<ORG>/rocket-utils.git@main#egg=rocket-utils
+git+ssh://git@github.com/<ORG>/rocket-ml.git@v1.2.0#egg=rocket-ml
