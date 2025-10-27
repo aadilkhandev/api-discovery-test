@@ -1,0 +1,26 @@
+{
+  "name": "rocket-app",
+  "version": "1.0.0",
+  "description": "CRM and reputation manager for restaurants",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Rocket Team",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.21.0",
+    "mongoose": "^8.5.0",
+    "@rocket/private-utils": "git+https://<TOKEN>@github.com/<ORG>/private-utils.git",
+    "@rocket/ui-components": "git+ssh://git@github.com:<ORG>/ui-components.git"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<ORG>/rocket-app.git"
+  },
+  "publishConfig": {
+    "@rocket:registry": "https://npm.pkg.github.com/"
+  }
+}
