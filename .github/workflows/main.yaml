@@ -1,0 +1,38 @@
+name: Docker Image CI
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
+  REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+  API_KEY: ${{ secrets.CDKEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+  OPENAI_API_KEY: ${{ secrets.OPENAIAPIKEY }}
+
+jobs:
+  pre-build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Scan code for vulnerabilities and PR review
+        run: |
+          echo "Downloading CloudDefense CLI"
+          curl -L https://github.com/CloudDefenseAI/cd/releases/download/1.38.7/cd-latest-linux-x64.tar.gz \
+            > /tmp/cd-latest-linux-x64.tar.gz
+          sudo tar -C /usr/local/bin -xzf /tmp/cd-latest-linux-x64.tar.gz
+          sudo chmod +x /usr/local/bin/cd-latest-linux-x64
+
+          export SCAN_URL=https://console.clouddefenseai.com
+          cd-latest-linux-x64 online \
+            --api-key="$API_KEY" \
+            --repository-url="$REPO_URL" \
+            --type=GITHUB \
+            --branch-name=test \
+            --pr-id="$GITHUB_PR_NUMBER" \
+            --pr-review \
+            --github-token="$GITHUB_TOKEN" \
+            --ai-api-key="$OPENAI_API_KEY"
